@@ -22,7 +22,7 @@ const RegisterPage = () => {
     return (
 
         <>
-            <div className="flex flex-col items-center justify-center min-h-screen bg-base-200">
+            <div className="flex flex-col items-center justify-center min-h-screen bg-base">
                 <h1 className="text-4xl font-bold text-primary mb-12 mt-4">AniVault</h1>
                 <div className="card w-96 bg-base-100 shadow-xl border-2 border-primary">
                     <div className="card-body">
