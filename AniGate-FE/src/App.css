@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@plugin "daisyui"{  themes: abyss --default;}
+@plugin "daisyui"{  themes: sunset --default;}
 
 #root {
   margin: 0 auto;
