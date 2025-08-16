@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 
-const LoginPage: React.FunctionComponent = () => {
+const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -12,10 +12,13 @@ const LoginPage: React.FunctionComponent = () => {
         event.preventDefault();
 
         try {
+            // Await for the login request at the /auth/login endpoint
             await axiosInstance.post('/auth/login', { username, password}, { withCredentials: true  });
+            // If the await promise resolves, navigate to the content page
             navigate('/content'); 
                 
         } catch(err) {
+            // If the promise is rejected, an alert will pop up
             alert('Login failed. Please check your credentials.');
             console.error(err);
         }
