@@ -1,14 +1,15 @@
 import NavBar from '../components/NavBar'
-import axios from 'axios';
+import GenreSelect from '../components/GenreSelect'
 
 const ContentPage = () => {
 
-    
+
 
 
     return (
         <div>
             <NavBar />
+            <GenreSelect />
             <h1>Content Page</h1>
         </div>
     )
