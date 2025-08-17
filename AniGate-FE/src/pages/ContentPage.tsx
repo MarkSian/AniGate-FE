@@ -1,11 +1,15 @@
 import NavBar from '../components/NavBar'
+import axios from 'axios';
+
 const ContentPage = () => {
+
+    
+
 
     return (
         <div>
             <NavBar />
             <h1>Content Page</h1>
-            <p>This is the content page.</p>
         </div>
     )
 }
