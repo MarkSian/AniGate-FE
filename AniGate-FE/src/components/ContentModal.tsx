@@ -4,10 +4,10 @@
 interface ContentModalProperties {
     open: boolean; // indicates if modal is open
     anime: any | null; // anime object to display, can be null until a selection is made
-    onClose: () => void; // handler for closing the modal
+    onClose: () => void; // set to void so it can be used as a callback function
 }
 
-const ContentModal = ({ open, anime, onClose }) => {
+const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, anime, onClose }) => {
 
     // Case when the modal is not open, return null to prevent any rendering
     if (!open) return null;
@@ -17,7 +17,7 @@ const ContentModal = ({ open, anime, onClose }) => {
         <>
             <input type="checkbox" checked={open} readOnly id="my_modal_7" className="modal-toggle" />
                 <div className="modal" role="dialog">
-                <div className="modal-box">
+                <div className="modal-box max-w-5xl">
                     {/* Title */}
                     <h3 className='text-lg font-bold'>{anime.title}</h3>
                     {/* Trailer */}
@@ -25,7 +25,7 @@ const ContentModal = ({ open, anime, onClose }) => {
                         <div>
                             <iframe
                                 width="100%"
-                                height="250"
+                                height="400"
                                 src={anime.trailer.embed_url}
                                 title="Anime Trailer"
                                 allowFullScreen
@@ -38,7 +38,7 @@ const ContentModal = ({ open, anime, onClose }) => {
                     {/* Score */}
                     <p>{anime.score ?? 'N/A'}</p>
                 </div>
-            <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
+            <label className="modal-backdrop" htmlFor="my_modal_7" onClick={onClose}>Close</label>
             </div>
         
         
