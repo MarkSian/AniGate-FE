@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-
-const GenreSelect = () => {
-
-    const loadGenres = async () => {
+const loadGenres = async () => {
         try {
             // Fetch data from Jikan API
             const firstResponse = await axios.get('https://api.jikan.moe/v4/genres/anime');
@@ -14,15 +11,4 @@ const GenreSelect = () => {
         }
     };
 
-    // Call the function to load firstResponse
-    loadGenres();
-
-    return (
-        <div>
-            <h2>Select Genre</h2>
-            {/* Genre selection UI will go here */}
-        </div>
-    );
-}
-
-export default GenreSelect;
+export default loadGenres;

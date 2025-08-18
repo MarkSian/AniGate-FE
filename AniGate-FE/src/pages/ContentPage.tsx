@@ -1,5 +1,6 @@
 import NavBar from '../components/NavBar'
-import GenreSelect from '../components/GenreSelect'
+import GenreButtons from '../components/GenreButtons';
+
 
 const ContentPage = () => {
 
@@ -7,9 +8,9 @@ const ContentPage = () => {
 
 
     return (
-        <div>
+        <div className='items-center justify-center min-h-screen bg-cover bg-center bg-[url(/images/night-anime-cityscape-background.jpg)]'>
             <NavBar />
-            <GenreSelect />
+            <GenreButtons />
             <h1>Content Page</h1>
         </div>
     )
