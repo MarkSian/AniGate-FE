@@ -64,7 +64,7 @@ const GenreButtons = () => {
         const elapsed = Date.now() - start; 
         const minLoading = 3500; 
         if (elapsed < minLoading) {
-            setTimeout(() => setLoadingAnime(false), minLoading - elapsed); 
+            setTimeout(() => setLoadingAnime(false), minLoading - elapsed); // setTimeout
         } else {
         setLoadingAnime(false); // Set loading state to false after fetching new anime
         }

@@ -52,7 +52,13 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, a
                                 className="rounded"
                             ></iframe>
                         </div>
-                    ) : ( <p>No trailer available</p> )}
+                    ) : (
+                        <img
+                            src={anime.images?.jpg?.large_image_url || anime.images?.jpg?.image_url}
+                            alt={anime.title}
+                            className="w-full max-h-96 object-contain rounded mb-4"
+                        />
+                    )}
                     {/* Synopsis */}
                     <p className="py-4">{anime.synopsis || 'No synopsis available'}</p>
                     {/* Score */}
