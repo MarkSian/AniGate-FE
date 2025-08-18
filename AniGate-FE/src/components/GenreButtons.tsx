@@ -1,31 +1,21 @@
 import genreList from '../assets/genreList';
-import loadGenres from '../api/loadGenres';
-import loadAnimeByGenre from '../api/loadAnimeByGenre';
-import { useEffect, useState } from 'react';
+import loadRandomAnimeByGenre from '../api/loadRandomAnimeByGenre';
+
 
 
 const GenreButtons = () => {
 
-    useEffect(() => {
-        // Load genres when the component is mounted
-        try {
-            loadGenres();
-            console.log('Genres loaded successfully');
-        } catch (err) {
-            console.error('Error loading genres:', err);
-        };
-
-    }, [])
-
-    useEffect(() => {
-        // Load anime by genre when the component is mounted
-        try {
-            loadAnimeByGenre();
-            console.log('Anime by genre loaded successfully');
-        } catch (err) {
-            console.error('Error loading anime by genre:', err);
+    // Handler for Genre Button Click
+    // This fetches anime info based on the genre ID and console logs the anime object
+    const handleGenreClick = async (genreID: string) => {
+        const anime = await loadRandomAnimeByGenre(genreID);
+        if (anime) {
+            alert(`Random anime: ${anime.title}`);
+            console.log(anime);
+        } else {
+            alert('No anime found for this genre.');
         }
-    }, [])
+    };
 
     return (
        <>
@@ -35,7 +25,7 @@ const GenreButtons = () => {
                 <button
                     key={value}
                     className="btn btn-primary w-full"
-                    onClick={() => console.log(`Selected genre: ${key}`)}
+                    onClick={() => handleGenreClick(value)}
                 >
                     {key}
                 </button>
