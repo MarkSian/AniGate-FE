@@ -6,6 +6,11 @@ const loadRandomAnimeByGenre = async (genreID: string, limit = 25) => {
 
     // Find the total number of pages for the genre. This is necessary so that we do not fall out of bounds and return an empty array.
     const { pagination } = await loadAnimeByGenre(genreID, 1, limit);
+    
+    if (!pagination) {
+        console.error('No pagination info returned for this genre.');
+        return null;
+    }
     const totalPages = pagination.last_visible_page || 1;
 
     // from the total number of pages, we randomly select one page

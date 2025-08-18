@@ -13,12 +13,14 @@ const loadAnimeByGenre = async (genreID: string, page: number = 1, limit: number
                 page,
                 limit,
                 sfw: true,
-                min_score: 8.5,
+                min_score: 7.5,
                 genres: genreID,
             }
             const firstResponse = await axios.get('https://api.jikan.moe/v4/anime', { params });
             // console.log('First response data:', firstResponse.data.data);
             // console.log('Pagination info:', firstResponse.data.pagination);
+            // console.log(`Fetched ${firstResponse.data.data.length} anime from genre ${genreID} on page ${page}.`);
+            // console.log(`Pagination info:`, firstResponse.data.pagination);
             return {
                 data: firstResponse.data.data,
                 pagination: firstResponse.data.pagination,
