@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const loadAnimeByGenreAdventure = async () => {
+const loadAnimeByGenre = async () => {
         try {
             const firstResponse = await axios.get('https://api.jikan.moe/v4/anime?genre=1');
             console.log('Adventure genre data:', firstResponse); 
@@ -10,5 +10,4 @@ const loadAnimeByGenreAdventure = async () => {
         }
     };
 
-    //call the function to load anime by genre
-    loadAnimeByGenreAdventure();
+export default loadAnimeByGenre;

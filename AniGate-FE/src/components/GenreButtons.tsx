@@ -1,5 +1,6 @@
 import genreList from '../assets/genreList';
 import loadGenres from '../api/loadGenres';
+import loadAnimeByGenre from '../api/loadAnimeByGenre';
 import { useEffect, useState } from 'react';
 
 
@@ -7,9 +8,23 @@ const GenreButtons = () => {
 
     useEffect(() => {
         // Load genres when the component is mounted
-        loadGenres()
-            .then(() => console.log('Genres loaded successfully'))
+        try {
+            loadGenres();
+            console.log('Genres loaded successfully');
+        } catch (err) {
+            console.error('Error loading genres:', err);
+        };
 
+    }, [])
+
+    useEffect(() => {
+        // Load anime by genre when the component is mounted
+        try {
+            loadAnimeByGenre();
+            console.log('Anime by genre loaded successfully');
+        } catch (err) {
+            console.error('Error loading anime by genre:', err);
+        }
     }, [])
 
     return (
