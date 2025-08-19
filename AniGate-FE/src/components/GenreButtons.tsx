@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import genreList from '../assets/genreList';
 import loadRandomAnimeByGenre from '../api/loadRandomAnimeByGenre';
 import ContentModal from './ContentModal';
@@ -11,6 +11,13 @@ const GenreButtons = () => {
     const [currentGenre, setCurrentGenre] = useState<string | null>(null); // Track the current genre
     const [animeHistory, setAnimeHistory] = useState<any[]>([]); // array to keep objects of anime history
     const [currentIndex, setCurrentIndex] = useState<number>(-1); // Track curreent index starting at -1 as no anime is selected initially
+    const [loadingDirection, setLoadingDirection] = useState<'next' | 'back' | null>(null);
+
+      useEffect(() => {
+        if (currentIndex >= 0 && animeHistory[currentIndex]) {
+            setSelectedAnime(animeHistory[currentIndex]);
+        }
+    }, [currentIndex, animeHistory]);
 
     // Handler for Genre Button Click
     // This fetches anime info based on the genre ID and console logs the anime object
@@ -38,15 +45,14 @@ const GenreButtons = () => {
 
     // Handler for next button event
     const handleNextClick = async () => {
-        // Determine the current genre ID from the selected anime
+        setLoadingDirection('next');
+        setLoadingAnime(true);
         if (!currentGenre) return;
 
-        setLoadingAnime(true);
-        const start = Date.now(); // start time for loading delay
-
+        const start = Date.now();
         const displayedId = animeHistory.map(a => a.mal_id);
-        let anime = null; // null to indicate no anime is selected
-        let attempts= 0; 
+        let anime = null;
+        let attempts = 0;
 
         while ((!anime || displayedId.includes(anime.mal_id)) && attempts < 10) {
             anime = await loadRandomAnimeByGenre(currentGenre, 25);
@@ -55,18 +61,45 @@ const GenreButtons = () => {
 
         if (anime && anime.title) {
             const newHistory = [...animeHistory.slice(0, currentIndex + 1), anime];
-            setAnimeHistory(newHistory); // Update the anime history with the new anime
-            setCurrentIndex(newHistory.length - 1); // Update the current index 
-            setSelectedAnime(anime); // Set the selected anime object
+            setAnimeHistory(newHistory);
+            setCurrentIndex(newHistory.length - 1);
+            setSelectedAnime(anime);
         } else {
             alert('No more anime available in this genre.');
         }
-        const elapsed = Date.now() - start; 
-        const minLoading = 3500; 
+        const elapsed = Date.now() - start;
+        const minLoading = 3500;
         if (elapsed < minLoading) {
-            setTimeout(() => setLoadingAnime(false), minLoading - elapsed); // setTimeout
+            setTimeout(() => {
+                setLoadingAnime(false);
+                setLoadingDirection(null);
+            }, minLoading - elapsed);
         } else {
-        setLoadingAnime(false); // Set loading state to false after fetching new anime
+            setLoadingAnime(false);
+            setLoadingDirection(null);
+        }
+    };
+
+    // Handler for the back button on the ContentModal
+    const handleBackClick = () => {
+        setLoadingDirection('back');
+        setLoadingAnime(true);
+        const start = Date.now();
+
+        if (currentIndex > 0) {
+            setCurrentIndex(currentIndex - 1);
+            setSelectedAnime(animeHistory[currentIndex - 1]);
+        }
+        const elapsed = Date.now() - start;
+        const minLoading = 3500;
+        if (elapsed < minLoading) {
+            setTimeout(() => {
+                setLoadingAnime(false);
+                setLoadingDirection(null);
+            }, minLoading - elapsed);
+        } else {
+            setLoadingAnime(false);
+            setLoadingDirection(null);
         }
     };
 
@@ -91,7 +124,9 @@ const GenreButtons = () => {
                 anime={selectedAnime}
                 onClose={handleCloseModal}
                 onNext={handleNextClick}
-                loading={loadingAnime} 
+                onBack={handleBackClick}
+                loading={loadingAnime}
+                loadingDirection={loadingDirection}
                 />
         </>
     );

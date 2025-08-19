@@ -3,12 +3,13 @@ interface ContentModalProperties {
     open: boolean; // indicates if modal is open
     anime: any | null; // anime object to display, can be null until a selection is made
     onClose: () => void; // set to void so it can be used as a callback function
-    onNext: () => void; // callback for next anime, 
+    onNext: () => void; // callback for next anime,
+    onBack: () => void; // callback for previous anime 
     loading: boolean;
-    // onPrevious: () => void; // callback for previous anime, 
+    loadingDirection: 'next' | 'back' | null;
 }
 
-const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, anime, onClose, onNext, loading }) => {
+const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, anime, onClose, onNext, onBack, loading, loadingDirection }) => {
     // Case when the modal is not open, return null to prevent any rendering
     if (!open) return null;
 
@@ -19,11 +20,21 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, a
                 <div className="modal" role="dialog">
                     <div className="modal-box max-w-5xl flex flex-col items-center justify-center">
                         <img
-                            src="/images/Jeanne_FlagWave.gif"
+                            src={
+                                loadingDirection === 'back'
+                                    ? "/images/Jeanne_Alter_FlagWave.gif"
+                                    : "/images/Jeanne_FlagWave.gif"
+                            }
                             alt="Loading..."
                             className="mb-4 w-64 h-64 object-contain"
                         />
-                        <h3 className="text-lg font-bold">Loading next anime...</h3>
+                        <h3 className="text-lg font-bold">
+                            {loadingDirection === 'back'
+                                ? "Loading previous anime..."
+                                : loadingDirection === 'next'
+                                    ? "Loading next anime..."
+                                    : "Loading anime..."}
+                        </h3>
                     </div>
                     <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
                 </div>
@@ -63,7 +74,8 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, a
                     <p className="py-4">{anime.synopsis || 'No synopsis available'}</p>
                     {/* Score */}
                     <p>{anime.score ?? 'N/A'}</p>
-                    <button>Previous</button>
+                    <button
+                    className='btn btn-primary' onClick={onBack} disabled={loading}>Back</button>
                     <button
                         className="btn btn-primary"
                         onClick={onNext}
