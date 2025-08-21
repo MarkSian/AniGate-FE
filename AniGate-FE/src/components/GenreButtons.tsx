@@ -5,7 +5,7 @@ import ContentModal from './ContentModal';
 
 const GenreButtons = () => {
     const [loadingGenre, setLoadingGenre] = useState<string | null>(null);
-    const [loadingAnime, setLoadingAnime] = useState<boolean>(false); 
+    const [loadingAnime, setLoadingAnime] = useState<boolean>(false);
     const [modalOpen, setModalOpen] = useState(false); // Set to false initially 
     const [selectedAnime, setSelectedAnime] = useState<string | null>(null); // Set to null initially to indicate no anime is selected
     const [currentGenre, setCurrentGenre] = useState<string | null>(null); // Track the current genre
@@ -13,7 +13,7 @@ const GenreButtons = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(-1); // Track curreent index starting at -1 as no anime is selected initially
     const [loadingDirection, setLoadingDirection] = useState<'next' | 'back' | null>(null);
 
-      useEffect(() => {
+    useEffect(() => {
         if (currentIndex >= 0 && animeHistory[currentIndex]) {
             setSelectedAnime(animeHistory[currentIndex]);
         }
@@ -127,7 +127,9 @@ const GenreButtons = () => {
                 onBack={handleBackClick}
                 loading={loadingAnime}
                 loadingDirection={loadingDirection}
-                />
+                saveFavorites={saveFavorites} // <-- add this
+                deleteFavorite={deleteFavorite} // <-- add this
+            />
         </>
     );
 };

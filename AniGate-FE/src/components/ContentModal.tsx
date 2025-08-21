@@ -4,12 +4,13 @@ interface ContentModalProperties {
     anime: any | null; // anime object to display, can be null until a selection is made
     onClose: () => void; // set to void so it can be used as a callback function
     onNext: () => void; // callback for next anime,
-    onBack: () => void; // callback for previous anime 
+    onBack: () => void; // callback for previous anime
+    onFavorite: () => void;
     loading: boolean;
     loadingDirection: 'next' | 'back' | null;
 }
 
-const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, anime, onClose, onNext, onBack, loading, loadingDirection }) => {
+const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, anime, onClose, onNext, onBack, onFavorite, loading, loadingDirection }) => {
     // Case when the modal is not open, return null to prevent any rendering
     if (!open) return null;
 
@@ -46,9 +47,9 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, a
     return (
         <>
             <input type="checkbox" checked={open} readOnly id="my_modal_7" className="modal-toggle" />
-                <div className="modal" role="dialog">
+            <div className="modal" role="dialog">
                 <div className="modal-box max-w-5xl">
-                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"onClick={onClose} >✕</button>
+                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={onClose} >✕</button>
                     {/* Title */}
                     <h3 className='text-lg font-bold'>{anime.title}</h3>
                     {/* Trailer */}
@@ -75,7 +76,7 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, a
                     {/* Score */}
                     <p>{anime.score ?? 'N/A'}</p>
                     <button
-                    className='btn btn-primary' onClick={onBack} disabled={loading}>Back</button>
+                        className='btn btn-primary' onClick={onBack} disabled={loading}>Back</button>
                     <button
                         className="btn btn-primary"
                         onClick={onNext}
@@ -83,13 +84,16 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, a
                     >
                         {loading ? "Loading..." : "Next"}
                     </button>
+                    <button onClick={onFavorite} >
+                        Favorite
+                    </button>
                 </div>
-            <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
+                <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
             </div>
-        
-        
+
+
         </>
-                
+
     )
 }
 
