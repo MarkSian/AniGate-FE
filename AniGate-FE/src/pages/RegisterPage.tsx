@@ -1,17 +1,18 @@
 import axiosInstance from '../api/connector';
 import { useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const RegisterPage = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const navigate = useNavigate();
 
     const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
-            await axiosInstance.post('/auth/register', { username, password});
+            await axiosInstance.post('/auth/register', { username, password });
             alert('Registration successful! You can now log in.');
             navigate('/login');
         } catch (err) {
