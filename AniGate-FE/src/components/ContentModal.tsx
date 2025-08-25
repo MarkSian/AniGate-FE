@@ -1,17 +1,20 @@
-// Define the properties interface for type safety
-interface ContentModalProperties {
-    open: boolean; // indicates if modal is open
-    anime: any | null; // anime object to display, can be null until a selection is made
-    onClose: () => void; // set to void so it can be used as a callback function
-    onNext: () => void; // callback for next anime,
-    onBack: () => void; // callback for previous anime
-    onFavorite: () => void;
-    loading: boolean;
-    loadingDirection: 'next' | 'back' | null;
+import type { Anime } from "./types/anime"
+
+type ContentModalProperties = {
+    open: boolean
+    loading: boolean
+    loadingDirection: 'Next' | 'Back' | null
+    onClose: () => void
+    onNext: () => void
+    onBack: () => void
+    onSave: (animeDetails: Anime) => void
+    onDelete: (mal_id: string) => void
+    animeDetails: Anime
+
+
 }
 
-const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, anime, onClose, onNext, onBack, onFavorite, loading, loadingDirection }) => {
-    // Case when the modal is not open, return null to prevent any rendering
+const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose, onNext, onBack, onSave, onDelete, open, loading, loadingDirection, animeDetails }) => {
     if (!open) return null;
 
     if (loading) {
@@ -22,43 +25,72 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, a
                     <div className="modal-box max-w-5xl flex flex-col items-center justify-center">
                         <img
                             src={
-                                loadingDirection === 'back'
-                                    ? "/images/Jeanne_Alter_FlagWave.gif"
-                                    : "/images/Jeanne_FlagWave.gif"
+                                loadingDirection === 'Back'
+                                    ? "images/Jeanne_Alter_FlagWave.gif"
+                                    : loadingDirection === 'Next'
+                                        ? "images/Jeanne_FlagWave.gif"
+                                        : "images/Anime_Spinner.gif"
                             }
                             alt="Loading..."
                             className="mb-4 w-64 h-64 object-contain"
                         />
                         <h3 className="text-lg font-bold">
-                            {loadingDirection === 'back'
-                                ? "Loading previous anime..."
-                                : loadingDirection === 'next'
-                                    ? "Loading next anime..."
-                                    : "Loading anime..."}
+                            {loadingDirection === 'Back'
+                                ? "Loading Previous Anime"
+                                : loadingDirection === 'Next'
+                                    ? "Loading Next Anime"
+                                    : "Loading Anime"}
                         </h3>
+
                     </div>
                     <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
                 </div>
             </>
         );
-    }
+    };
 
-    // Render the modal with information related to the anime content
+
+    if (loadingDirection) {
+        return (
+            <>
+                <input type="checkbox" checked={open} readOnly id="my_modal_7" className="modal-toggle" />
+                <div className="modal" role="dialog">
+                    <div className="modal-box max-w-5xl flex flex-col items-center justify-center">
+                        <img
+                            src={
+                                loadingDirection === 'Next'
+                                    ? "images/Jeanne_FlagWave.gif"
+                                    : "images/Jeanne_Alter_FlagWave.gif"
+                            }
+                            alt="Loading..."
+                            className="mb-4 w-64 h-64 object-contain"
+                        />
+                        <h3 className="text-lg font-bold">
+                            Loading Anime
+                        </h3>
+
+                    </div>
+                    <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
+                </div>
+            </>
+        );
+    };
+
+
     return (
         <>
             <input type="checkbox" checked={open} readOnly id="my_modal_7" className="modal-toggle" />
             <div className="modal" role="dialog">
                 <div className="modal-box max-w-5xl">
-                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={onClose} >✕</button>
                     {/* Title */}
-                    <h3 className='text-lg font-bold'>{anime.title}</h3>
+                    <h3 className='text-lg font-bold'>{animeDetails.title}</h3>
                     {/* Trailer */}
-                    {anime.trailer?.embed_url ? (
+                    {animeDetails.trailer?.embed_url ? (
                         <div>
                             <iframe
                                 width="100%"
                                 height="400"
-                                src={anime.trailer.embed_url}
+                                src={animeDetails.trailer.embed_url}
                                 title="Anime Trailer"
                                 allowFullScreen
                                 className="rounded"
@@ -66,36 +98,51 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ open, a
                         </div>
                     ) : (
                         <img
-                            src={anime.images?.jpg?.large_image_url || anime.images?.jpg?.image_url}
-                            alt={anime.title}
+                            src={animeDetails.images?.jpg?.large_image_url || animeDetails.images?.jpg?.image_url}
+                            alt={animeDetails.title}
                             className="w-full max-h-96 object-contain rounded mb-4"
                         />
                     )}
                     {/* Synopsis */}
-                    <p className="py-4">{anime.synopsis || 'No synopsis available'}</p>
+                    <p className="py-4">{animeDetails.synopsis || 'No synopsis available'}</p>
                     {/* Score */}
-                    <p>{anime.score ?? 'N/A'}</p>
+                    <p>{animeDetails.score ?? 'N/A'}</p>
+
                     <button
-                        className='btn btn-primary' onClick={onBack} disabled={loading}>Back</button>
-                    <button
-                        className="btn btn-primary"
-                        onClick={onNext}
-                        disabled={loading} // Disable while loading
-                    >
-                        {loading ? "Loading..." : "Next"}
+                        onClick={onClose}
+                        className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" >
+                        ✕
                     </button>
-                    <button onClick={onFavorite} >
+                    <button
+                        onClick={onBack}
+                        className='btn btn-primary'
+                    >
+                        Back
+                    </button>
+                    <button
+                        onClick={onNext}
+                        className='btn btn-primary'
+                    >
+                        Next
+                    </button>
+                    <button
+                        onClick={() => onSave(animeDetails)}
+                        className='btn btn-primary'
+                    >
                         Favorite
+                    </button>
+                    <button
+                        onClick={() => onDelete(animeDetails.mal_id)}
+                        className='btn btn-primary'
+                    >
+                        Un-Favorite
                     </button>
                 </div>
                 <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
             </div>
 
-
         </>
-
     )
 }
 
-export default ContentModal;
-
+export default ContentModal
