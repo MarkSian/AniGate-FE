@@ -1,7 +1,7 @@
-import NavBar from '../components/NavBar'
 import GenreButtons from '../components/GenreButtons';
 import ContentModal from '../components/ContentModal';
 import useAnimeHandlers from '../api/useAnimeHandlers'
+import NavBar from '../components/NavBar';
 
 
 
@@ -17,8 +17,8 @@ const ContentPage = () => {
         handleDeleteFavoriteButton,
         loadingGenre,
         loadingAnime,
-        loadingDirection
-
+        loadingDirection,
+        selectedGenre,
     } = useAnimeHandlers();
 
 
@@ -38,9 +38,10 @@ const ContentPage = () => {
                     onSave={handleSaveFavoriteButton}
                     onDelete={handleDeleteFavoriteButton}
                     loadingDirection={loadingDirection}
+                    selectedGenre={selectedGenre}
+                    mode='browsing'
                 />
             )}
-            <h1>Content Page</h1>
         </div>
     )
 }

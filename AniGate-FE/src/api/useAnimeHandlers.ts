@@ -2,6 +2,7 @@ import loadRandomAnimeByGenre from "./loadRandomAnimeByGenre";
 import type { Anime } from '../components/types/anime'
 import axiosInstance from "./connector";
 import { useState, useEffect, useRef } from 'react'
+import axios from 'axios';
 
 const animeHandler = () => {
     const [openModal, setModalOpen] = useState<boolean>(false)
@@ -9,7 +10,7 @@ const animeHandler = () => {
     const [currentAnime, setCurrentAnime] = useState<Anime | null>(null);
     const [currentIndex, setCurrentIndex] = useState<number>(0)
     const [animeHistory, setAnimeHistory] = useState<Anime[]>([]);
-    const [favorties, setFavorites] = useState<Anime[]>([]);
+    const [favorites, setFavorites] = useState<Anime[]>([]);
     const [loadingGenre, setLoadingGenre] = useState<string | null>(null);
     const [loadingAnime, setLoadingAnime] = useState<boolean>(false);
     const [loadingDirection, setLoadingDirection] = useState<'Next' | 'Back' | null>(null);
@@ -76,6 +77,22 @@ const animeHandler = () => {
 
 
     };
+
+    const handleViewButton = async (mal_id: string) => {
+        setModalOpen(true);
+
+        try {
+            const response = await axios.get(`https://api.jikan.moe/v4/anime/${mal_id}`)
+            const anime: Anime = response.data.data;
+            setCurrentAnime(anime);
+            console.log(anime)
+        } catch (err) {
+            console.log('Error Retrieving Favorite Anime ', err)
+
+        }
+
+    };
+
     // Handler to close modal
     const handleCloseModal = () => {
         setModalOpen(false);
@@ -153,29 +170,51 @@ const animeHandler = () => {
             title: anime.title,
             genres: anime.genres.map((g: any) => g.name),
             rating: anime.score,
-            imageURL: anime.images.jpg.image_url,
+            imageUrl: anime.images.jpg.image_url,
             synopsis: anime.synopsis,
             mal_id: anime.mal_id
         }
         try {
             await axiosInstance.post('/aniGate/favorite', animePayLoad);
             setFavorites(fav => [...fav, anime])
+            console.log('Favorited!')
+            await fetchFavorites();
         } catch (err) {
             console.error('Error saving anime', err)
         }
         console.log(animePayLoad)
     };
 
-    const handleDeleteFavoriteButton = (mal_id: string) => {
+    // Handle Delete Favorites Click
+    const handleDeleteFavoriteButton = async (mal_id: string) => {
         try {
             axiosInstance.delete(`/aniGate/favorite/${mal_id}`)
             setFavorites(fav => fav.filter((favAnime) => favAnime.mal_id != mal_id))
-            console.log('Anime List after deleting', favorties)
+            setTimeout(fetchFavorites, 300);
+            console.log('Anime Removed from favorite list')
 
         } catch (err) {
             console.error('Error deleting anime', err)
         }
     }
+
+    const fetchFavorites = async () => {
+
+        try {
+            const response = await axiosInstance.get('/aniGate/favorite');
+            setFavorites(response.data)
+            console.log('Favorites', response.data)
+        } catch (err) {
+            console.error('Error Fetching Favorites', err)
+        };
+
+    }
+
+    useEffect(() => {
+        fetchFavorites();
+
+    }, []
+    );
 
 
     return {
@@ -192,7 +231,8 @@ const animeHandler = () => {
         handleBackButton,
         handleSaveFavoriteButton,
         handleDeleteFavoriteButton,
-        favorties
+        handleViewButton,
+        favorites
 
     }
 }

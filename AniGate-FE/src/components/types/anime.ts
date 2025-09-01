@@ -12,7 +12,7 @@ export type Anime = {
     trailer: {
         embed_url: string
     }
-    imageURL: string
+    imageUrl: string
     synopsis: string
     mal_id: string
 };
