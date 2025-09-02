@@ -1,7 +1,20 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from '../api/connector';
 
 
 const NavBar = () => {
+    const navigate = useNavigate();
+
+    const handleLogOut = () => {
+        try {
+            axiosInstance.post('/auth/Logout')
+            navigate('/');
+
+        } catch (err) {
+            console.error('Could Not Log Out', err)
+        }
+
+    };
 
 
 
@@ -9,14 +22,22 @@ const NavBar = () => {
         <>
             <div className="navbar bg-base-300 center-container mt-4 py-2 my-2 rounded-[15px] shadow-xl">
                 <div className="navbar-start">
-                    <Link to='/content'>ContentPage</Link>
                 </div>
                 <div className="navbar-center">
-                    <a className="btn btn-ghost text-3xl font-bold">AniGate
-                    </a>
+                    <Link
+                        className="btn btn-ghost text-3xl font-bold"
+                        to='/content'>AniGate</Link>
+
                 </div>
                 <div className="navbar-end">
                     <Link to='/user'>FavoritePage</Link>
+                    <button
+                        onClick={handleLogOut}
+                        className='btn btn-primary'
+                    >
+                        Log Out
+                    </button>
+
                 </div>
             </div>
 
