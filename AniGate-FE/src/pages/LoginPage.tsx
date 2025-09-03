@@ -36,8 +36,14 @@ const LoginPage = () => {
 
             <section className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 sm:px-6 lg:px-8">
                 <div className="w-full max-w-md rounded-2xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+                    {/* AniGate Title */}
+                    <div className="mb-8 flex flex-col items-center">
+                        <span className="text-4xl font-extrabold tracking-wide text-primary drop-shadow-lg">
+                            AniGate
+                        </span>
+                    </div>
                     <h1 className="mb-6 text-center text-2xl font-semibold tracking-tight text-white/90">
-                        Welcome
+                        Discover Anime by Genre
                     </h1>
 
                     <div className="mb-5 text-center text-primary">

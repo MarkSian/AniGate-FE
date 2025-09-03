@@ -153,7 +153,7 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
                         </button>
 
                         <button className='genre-button' onClick={handleClick}>
-                            {isClicked ? 'Favorite' : 'UnFavorite'}
+                            {isClicked ? 'Favorite' : 'Unfavorite'}
                         </button>
 
                     </div>
@@ -225,7 +225,7 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
                                 Back
                             </button>
                             <button className='genre-button' onClick={handleClick}>
-                                {isClicked ? 'UnFavorite' : 'Favorite'}
+                                {isClicked ? 'Unfavorite' : 'Favorite'}
                             </button>
                             <button
                                 onClick={onNext}
