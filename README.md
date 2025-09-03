@@ -9,7 +9,7 @@ With a simple and interactive interface, users can:
 - **Create a User Profile** with secure login to persist favorites across sessions.
 
 ## 🌐 Live Demo
-**Frontend:** [https://anigate-fe.onrender.com](https://anigate.onrender.com)  
+**Frontend:** [https://anigate.onrender.com](https://anigate.onrender.com)  
 **Backend Repo:** [https://github.com/MarkSian/AniGate-BE](https://github.com/MarkSian/AniGate-BE)
 
 ## ✨ Features
