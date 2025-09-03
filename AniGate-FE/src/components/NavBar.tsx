@@ -16,14 +16,21 @@ const NavBar = () => {
 
     };
 
+    const handleFavNav = () => {
+        navigate('/user');
+    };
+
 
 
     return (
         <>
             <div className="navbar bg-base-300 center-container mt-4 py-2 my-2 rounded-[15px] shadow-xl">
                 <div className="navbar-start">
-                    <button className='genre-button'>
-                        <Link to='/user'>Your Favorites</Link>
+                    <button
+                        onClick={handleFavNav}
+                        className='genre-button'
+                    >
+                        Your Favorites
                     </button>
 
                 </div>
