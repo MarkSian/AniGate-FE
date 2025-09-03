@@ -27,7 +27,14 @@ const UserPage = () => {
 
             <>
                 <NavBar />
-                {console.log('Parent favorites:', favorites)}
+                {/* {console.log('Parent favorites:', favorites)} */}
+
+                <header className="mt-5 mb-5">
+                    <h1 className="text-3xl font-semibold text-white/90">Favorites</h1>
+                    <p className="text-l text-white/60">
+                        View your Favorited Anime!
+                    </p>
+                </header>
                 <FavoriteList
                     favorites={favorites}
                     onView={handleViewButton}

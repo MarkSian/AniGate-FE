@@ -23,10 +23,10 @@ const animeHandler = () => {
         }
     }, [currentIndex, animeHistory]);
 
-    useEffect(() => {
-        console.log('Current Index (effect)', currentIndex);
-        console.log('AnimeHistory (effect)', animeHistory);
-    }, [currentIndex, animeHistory]);
+    // useEffect(() => {
+    //     console.log('Current Index (effect)', currentIndex);
+    //     console.log('AnimeHistory (effect)', animeHistory);
+    // }, [currentIndex, animeHistory]);
 
     // Track and Clear Timeouts
     const clearLoadingTimeout = () => {
@@ -54,8 +54,8 @@ const animeHandler = () => {
         try {
             const anime: Anime = await loadRandomAnimeByGenre(genreID, 25);
             if (anime && anime.title)
-                console.log('Anime Title', anime.title)
-            setCurrentAnime(anime);
+                // console.log('Anime Title', anime.title)
+                setCurrentAnime(anime);
             setAnimeHistory([anime]);
             setCurrentIndex(0);
 
@@ -85,7 +85,7 @@ const animeHandler = () => {
             const response = await axios.get(`https://api.jikan.moe/v4/anime/${mal_id}`)
             const anime: Anime = response.data.data;
             setCurrentAnime(anime);
-            console.log(anime)
+            // console.log(anime)
         } catch (err) {
             console.log('Error Retrieving Favorite Anime ', err)
 
@@ -159,9 +159,9 @@ const animeHandler = () => {
             setLoadingDirection(null);
         }, Math.max(minLoading - elapsed, 0));
 
-        console.log('Back Button Clicked');
-        console.log('Current Index', currentIndex);
-        console.log('AnimeHistory', animeHistory);
+        // console.log('Back Button Clicked');
+        // console.log('Current Index', currentIndex);
+        // console.log('AnimeHistory', animeHistory);
     };
 
     // Handle onFavorite Clicks
@@ -177,12 +177,12 @@ const animeHandler = () => {
         try {
             await axiosInstance.post('/aniGate/favorite', animePayLoad);
             setFavorites(fav => [...fav, anime])
-            console.log('Favorited!')
+            // console.log('Favorited!')
             await fetchFavorites();
         } catch (err) {
             console.error('Error saving anime', err)
         }
-        console.log(animePayLoad)
+        // console.log(animePayLoad)
     };
 
     // Handle Delete Favorites Click
@@ -203,7 +203,7 @@ const animeHandler = () => {
         try {
             const response = await axiosInstance.get('/aniGate/favorite');
             setFavorites(response.data)
-            console.log('Favorites', response.data)
+            // console.log('Favorites', response.data)
         } catch (err) {
             console.error('Error Fetching Favorites', err)
         };

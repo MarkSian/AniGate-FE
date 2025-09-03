@@ -28,7 +28,7 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
     const handleClick = () => {
         if (!isClicked && mode === 'browsing') {
             onSave(animeDetails);
-            console.log('Favorited!');
+            // console.log('Favorited!');
         } else if (!isClicked && mode === 'favorite') {
             onDelete(animeDetails.mal_id);
         } else if (isClicked && mode === 'favorite') {
@@ -36,7 +36,7 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
         }
         else {
             onDelete(animeDetails.mal_id);
-            console.log('UnFavorited!');
+            // console.log('UnFavorited!');
         }
         setIsClicked(prev => !prev);
 
@@ -137,7 +137,12 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
                             />
                         )}
                         {/* Synopsis */}
-                        <p className="py-4">{animeDetails.synopsis || 'No synopsis available'}</p>
+                        <div className="bg-base-200/70 border border-base-300 rounded-xl p-4 my-4 max-h-48 overflow-y-auto shadow-md">
+                            <h4 className="text-base font-bold text-primary mb-2 tracking-wide">Synopsis</h4>
+                            <p className="text-sm text-base-content leading-relaxed whitespace-pre-line">
+                                {animeDetails.synopsis || 'No synopsis available'}
+                            </p>
+                        </div>
                         {/* Score */}
                         <p>{animeDetails.score ?? 'N/A'}</p>
 
@@ -147,7 +152,7 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
                             ✕
                         </button>
 
-                        <button className='btn btn-primary' onClick={handleClick}>
+                        <button className='genre-button' onClick={handleClick}>
                             {isClicked ? 'Favorite' : 'UnFavorite'}
                         </button>
 
@@ -163,10 +168,17 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
                 <input type="checkbox" checked={open} readOnly id="my_modal_7" className="modal-toggle" />
                 <div className="modal" role="dialog">
                     <div className="modal-box max-w-5xl">
-                        {/* Title */}
-                        <h3 className='text-lg font-bold'>
-                            {animeDetails.title} {genreName}
-                        </h3>
+                        {/* Title Row */}
+                        <div className="relative mb-6">
+                            {/* Genre */}
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-base font-semibold text-gray-400">
+                                {genreName}
+                            </span>
+                            {/* Title centered */}
+                            <h3 className="text-lg font-bold text-center">
+                                {animeDetails.title}
+                            </h3>
+                        </div>
                         {/* Trailer */}
                         {animeDetails.trailer?.embed_url ? (
                             <div>
@@ -187,9 +199,16 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
                             />
                         )}
                         {/* Synopsis */}
-                        <p className="py-4">{animeDetails.synopsis || 'No synopsis available'}</p>
+                        <div className="bg-base-200/70 border border-base-300 rounded-xl p-4 my-4 max-h-48 overflow-y-auto shadow-md">
+                            <h4 className="text-base font-bold text-primary mb-2 tracking-wide">Synopsis</h4>
+                            <p className="text-sm text-base-content leading-relaxed whitespace-pre-line">
+                                {animeDetails.synopsis || 'No synopsis available'}
+                            </p>
+                        </div>
                         {/* Score */}
-                        <p>{animeDetails.score ?? 'N/A'}</p>
+                        <p className="font-bold text-primary">
+                            Rating: {animeDetails.score ?? 'N/A'}
+                        </p>
 
                         <button
                             onClick={onClose}
@@ -197,24 +216,24 @@ const ContentModal: React.FunctionComponent<ContentModalProperties> = ({ onClose
                             ✕
                         </button>
 
-                        <button
-                            onClick={onBack}
-                            className='btn btn-primary'
-                        >
-                            Back
-                        </button>
-
-                        <button
-                            onClick={onNext}
-                            className='btn btn-primary'
-                        >
-                            Next
-                        </button>
-
-                        <button className='btn btn-primary' onClick={handleClick}>
-                            {isClicked ? 'UnFavorite' : 'Favorite'}
-                        </button>
-
+                        {/* Button Row */}
+                        <div className="flex justify-between items-center mt-6 gap-4">
+                            <button
+                                onClick={onBack}
+                                className='genre-button'
+                            >
+                                Back
+                            </button>
+                            <button className='genre-button' onClick={handleClick}>
+                                {isClicked ? 'UnFavorite' : 'Favorite'}
+                            </button>
+                            <button
+                                onClick={onNext}
+                                className='genre-button'
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                     <label className="modal-backdrop" htmlFor="my_modal_7">Close</label>
                 </div>

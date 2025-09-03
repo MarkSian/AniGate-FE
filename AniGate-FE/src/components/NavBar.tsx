@@ -22,6 +22,10 @@ const NavBar = () => {
         <>
             <div className="navbar bg-base-300 center-container mt-4 py-2 my-2 rounded-[15px] shadow-xl">
                 <div className="navbar-start">
+                    <button className='genre-button'>
+                        <Link to='/user'>Your Favorites</Link>
+                    </button>
+
                 </div>
                 <div className="navbar-center">
                     <Link
@@ -30,10 +34,10 @@ const NavBar = () => {
 
                 </div>
                 <div className="navbar-end">
-                    <Link to='/user'>FavoritePage</Link>
+
                     <button
                         onClick={handleLogOut}
-                        className='btn btn-primary'
+                        className='genre-button'
                     >
                         Log Out
                     </button>

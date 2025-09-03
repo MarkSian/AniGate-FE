@@ -12,7 +12,84 @@
   padding: 0;
   text-align: center;          
   overflow: auto;
-  font-family: electroliz-regular;
+  font-family: electrolize-regular;
+
+  --neon: #149CEA;          /* cyan frame/glow */
+  --neon-soft: rgba(20,156,234,0.45);
+  --bar-thickness: 3px;
+  --corner-radius: 0.35em;
+  --anim: 260ms ease;
 }
 
+.genre-button {
+  position: relative;
+  width: 10em;
+  height: 3.5em;
+  border-radius: var(--corner-radius);
+  background: transparent;
+  color: #fff;
+  font: 700 16px/1 ;
+  cursor: pointer;
+  outline: none;
+  border: none;                 
+  transition: box-shadow var(--anim), transform 120ms ease;
+  isolation: isolate;          
+}
+
+/* BRACKETS: left & right vertical bars only */
+.genre-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;                     /* covers the button */
+  pointer-events: none;
+
+  /* two vertical bars using multiple backgrounds */
+  background-image:
+    linear-gradient(90deg, var(--neon) 0 var(--bar-thickness), transparent 0),
+    linear-gradient(270deg, var(--neon) 0 var(--bar-thickness), transparent 0);
+  background-size: var(--bar-thickness) 100%, var(--bar-thickness) 100%;
+  background-repeat: no-repeat;
+  background-position: left center, right center;
+
+  /* slight neon halo for the brackets */
+  filter: drop-shadow(0 0 6px var(--neon-soft));
+  border-radius: var(--corner-radius);
+}
+
+/* TOP & BOTTOM bars */
+.genre-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(0deg,  var(--neon) 0 var(--bar-thickness), transparent 0),  /* top */
+    linear-gradient(180deg, var(--neon) 0 var(--bar-thickness), transparent 0); /* bottom */
+  background-size: 100% var(--bar-thickness), 100% var(--bar-thickness);
+  background-repeat: no-repeat;
+  background-position: top center, bottom center;
+
+  /* start “unfilled” */
+  opacity: 0;
+  transform: scaleX(0.6);
+  transition: transform var(--anim), opacity var(--anim);
+  border-radius: var(--corner-radius);
+}
+
+/* Hover state */
+.genre-button:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.genre-button:hover {
+  /* inner cyan glow once the frame is complete */
+  box-shadow:
+    inset 0 0 22px var(--neon-soft),
+    0 0 10px var(--neon-soft);
+}
+
+/* Active press feedback */
+.genre-button:active { transform: translateY(3px); }
 

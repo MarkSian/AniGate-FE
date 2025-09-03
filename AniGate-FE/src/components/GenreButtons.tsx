@@ -13,14 +13,15 @@ const GenreButtons: React.FunctionComponent<GenreButtonsProps> = ({ onGenreClick
 
     return (
         <>
-            <div>
+            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'>
                 {Object.entries(genreList).map(([key, value]: [string, string]) =>
-                (<button className={`btn ${loadingGenre === value ? 'btn-info opacity-50 text-neutral' : 'btn-primary'}`}
+                (<button className='genre-button'
                     key={value}
                     onClick={() => onGenreClick(value)}
                 >
                     {loadingGenre === value ? 'Loading...' : key}
-                </button>))}
+                </button>)
+                )}
             </div>
         </>
     )
