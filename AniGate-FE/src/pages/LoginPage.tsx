@@ -3,12 +3,14 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 const LoginPage = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setLoading(true);
         try {
             await axiosInstance.post(
                 "/auth/login",
@@ -19,6 +21,8 @@ const LoginPage = () => {
         } catch (err) {
             alert("Login failed. Please check your credentials.");
             console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -114,6 +118,12 @@ const LoginPage = () => {
                 </div>
             </section>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cyan-400/10 to-transparent" />
+
+            {loading && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+                    <span className="loading loading-bars loading-xl"></span>
+                </div>
+            )}
         </div>
     );
 };

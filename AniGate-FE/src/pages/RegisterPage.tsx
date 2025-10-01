@@ -6,17 +6,20 @@ import { Link, useNavigate } from 'react-router-dom';
 const RegisterPage = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setLoading(true);
 
         try {
             await axiosInstance.post('/auth/register', { username, password });
-            alert('Registration successful! You can now log in.');
-            navigate('/login');
+            navigate("/login")
         } catch (err) {
             alert('Registration Failed.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -107,6 +110,11 @@ const RegisterPage = () => {
                 </div>
             </section>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cyan-400/10 to-transparent" />
+            {loading && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+                    <span className="loading loading-bars loading-xl"></span>
+                </div>
+            )}
         </div>
 
     )
